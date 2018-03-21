@@ -12,7 +12,7 @@
 
 <meta name="author" content="Geoffrey Thompson" />
 
-<meta name="date" content="2018-02-24" />
+<meta name="date" content="2018-03-20" />
 
 <title>Some Distributions Related to the Wishart</title>
 
@@ -70,11 +70,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Some Distributions Related to the Wishart</h1>
 <h4 class="author"><em>Geoffrey Thompson</em></h4>
-<h4 class="date"><em>2018-02-24</em></h4>
+<h4 class="date"><em>2018-03-20</em></h4>
 
 
 
-<p>The <code>stats</code> implementation of <code>rWishart</code> is in C and is very fast. It is often the case that we do not want a sample from the Wishart distribution, but rather from the inverse of it or from the Cholesky decomposition of a sample from the Wishart distribution. Or even from the inverse of the Cholesky decomposition of a draw from the Wishart distribution. Funnily enough (if you have a weird sense of humor), when you inspect the <a href="https://github.com/SurajGupta/r-source/blob/master/src/library/stats/src/rWishart.c">source code</a> for the <code>rWishart</code> distribution, it generates the Cholesky decomposition and then multiplies it out. Meanwhile, drawing from the <code>rWishart</code> and then inverting or doing a Cholesky decomposition or whatever in R is just slow – comparatively.</p>
+<p>The <code>stats</code> implementation of <code>rWishart</code> is in C and is very fast. It is often the case that we do not want a sample from the Wishart distribution, but rather from the inverse of it or from the Cholesky decomposition of a sample from the Wishart distribution. Or even from the inverse of the Cholesky decomposition of a draw from the Wishart distribution. Funnily enough (if you have a weird sense of humor), when you inspect the <a href="https://github.com/SurajGupta/r-source/blob/master/src/library/stats/src/rWishart.c">source code</a> for the <code>rWishart</code> distribution (<span class="citation">R Core Team (2017)</span>), it generates the Cholesky decomposition and then multiplies it out. Meanwhile, drawing from the <code>rWishart</code> and then inverting or doing a Cholesky decomposition or whatever in R is just slow – comparatively.</p>
 <p>This suggests some obvious efficiencies: perhaps, if we would rather have the Cholesky decomposition of the Wishart random matrix, we could tell the function to stop right there.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">'CholWishart'</span>)
 <span class="kw">set.seed</span>(<span class="dv">20180220</span>)
@@ -87,12 +87,13 @@ C &lt;-<span class="st"> </span><span class="kw">rCholWishart</span>(<span class
 D &lt;-<span class="st"> </span><span class="kw">rInvCholWishart</span>(<span class="dv">1</span>,<span class="dv">10</span>,.<span class="dv">2</span><span class="op">*</span><span class="kw">diag</span>(<span class="dv">4</span>))[,,<span class="dv">1</span>]</code></pre></div>
 <div id="how-the-wishart-distribution-works" class="section level2">
 <h2>How the Wishart distribution works</h2>
-<p>How does <code>rWishart(n, df, Sigma)</code> work (supposing <code>Sigma</code> is a <span class="math inline">\(p \times p\)</span> matrix)? First, it generates a sample from the Cholesky decomposition of a Wishart distribution with <span class="math inline">\(\Sigma = \mathbf{I}_p\)</span>. How this is done: on the <span class="math inline">\(i^{th}\)</span> element of the main diagonal, draw from <span class="math inline">\(\sqrt{\chi_{p-i+1}^2}\)</span>. On the upper triangle of the matrix, draw from <span class="math inline">\(N(0,1)\)</span> in each square. Then, this can be multiplied by the Cholesky decomposition of the provided <code>Sigma</code> to obtain the Cholesky factor of the desired sample from the Wishart random variable. The <code>rWishart</code> function multiplies it out. Therefore, if the Cholesky decomposition is desired, one only needs to stop there.</p>
+<p>Suppose <span class="math inline">\(X_i \sim MVN(0, \Sigma)\)</span> are independent <span class="math inline">\(p\)</span>-variate normal random variables, <span class="math inline">\(i = 1, 2, \ldots n\)</span> with <span class="math inline">\(n &gt; p-1\)</span>. Then <span class="math inline">\(S = \sum X_i^T X_i\)</span>, called the “scatter matrix”, is almost surely positive definite if <span class="math inline">\(\Sigma\)</span> is positive definite. The random variable <span class="math inline">\(S\)</span> is said to be distributed as a Wishart random variable: <span class="math inline">\(S \sim W_p(n, \Sigma)\)</span>, see <span class="citation">Gupta and Nagar (1999)</span>.</p>
+<p>How does <code>rWishart(n, df, Sigma)</code> work (supposing <code>Sigma</code> is a <span class="math inline">\(p \times p\)</span> matrix)? First, it generates a sample from the Cholesky decomposition of a Wishart distribution with <span class="math inline">\(\Sigma = \mathbf{I}_p\)</span>. How this is done: on the <span class="math inline">\(i^{th}\)</span> element of the main diagonal, draw from <span class="math inline">\(\sqrt{\chi_{p-i+1}^2}\)</span>. On the upper triangle of the matrix, sample from an independent <span class="math inline">\(N(0,1)\)</span> for each entry in the matrix. Then, this can be multiplied by the Cholesky decomposition of the provided <code>Sigma</code> to obtain the Cholesky factor of the desired sample from the Wishart random variable (this construction is due to Bartlett and is also known as the Bartlett Decomposition) (see <span class="citation">Anderson (1984)</span>). The <code>rWishart</code> function multiplies this out. Therefore, if the Cholesky decomposition is desired, one only needs to stop there.</p>
 </div>
 <div id="the-inverse-wishart-distribution" class="section level2">
 <h2>The Inverse Wishart distribution</h2>
-<p>If <span class="math inline">\(X \sim \textrm{W}(\nu,\Sigma)\)</span>. Then we define the Inverse Wishart as <span class="math inline">\(X^{-1} = Y \sim \textrm{IW}(\nu , \Sigma^{-1})\)</span>. There are other parameterizations of this, mostly coming down to different ways of writing the <span class="math inline">\(\nu\)</span> parameter - be aware of this when using any package drawing from the Inverse Wishart distribution. This comes up directly in Bayesian statistics. We are also interested in the Cholesky decomposition of this, as it is directly relevant to the generation of the matrix variate <span class="math inline">\(t\)</span>-distribution. In this package it is done by taking the covariance matrix, inverting it, computing the Cholesky decomposition of the inverted covariance matrix, drawing the Cholesky factor of a Wishart matrix using that, and then inverting based on that (as finding <span class="math inline">\(\Psi^{-1}\)</span> given the Cholesky factorization of <span class="math inline">\(\Psi\)</span> is relatively fast). This can then be converted into the Cholesky factor of the Inverse Wishart if that is what is desired. This would be slow to do in R, but in C it is not so bad.</p>
-<p>So here is what happens with the results of the above:</p>
+<p>If <span class="math inline">\(X \sim \textrm{W}_p(\nu,\Sigma)\)</span>, then we define the Inverse Wishart as <span class="math inline">\(X^{-1} = Y \sim \textrm{IW}_p(\nu , \Sigma^{-1})\)</span>. There are other parameterizations of the distribution, mostly coming down to different ways of writing the <span class="math inline">\(\nu\)</span> parameter - be aware of this when using any package drawing from the Inverse Wishart distribution (see <span class="citation">Dawid (1981)</span> for an alternative; this presentation follows <span class="citation">Gupta and Nagar (1999)</span>). This comes up directly in Bayesian statistics. We are also interested in the Cholesky decomposition of this, as it is required in the generation of the matrix variate <span class="math inline">\(t\)</span>-distribution. In this package it is done by taking the covariance matrix, inverting it, computing the Cholesky decomposition of the inverted covariance matrix, drawing the Cholesky factor of a Wishart matrix using that, and then inverting based on that (as finding <span class="math inline">\(\Psi^{-1}\)</span> given the Cholesky factorization of <span class="math inline">\(\Psi\)</span> is relatively fast). This can then be converted into the Cholesky factor of the Inverse Wishart if that is what is desired. This would be slow to do in R, but in C it is not so bad.</p>
+<p>Here is what happens with the results of the above:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">A <span class="op">%*%</span><span class="st"> </span>B 
 ##               [,1]          [,2]          [,3]          [,4]
 ## [1,]  1.000000e+00 -2.775558e-17 -1.387779e-16 -5.551115e-17
@@ -118,6 +119,52 @@ D &lt;-<span class="st"> </span><span class="kw">rInvCholWishart</span>(<span cl
 ## [3,] -1.249001e-16  1.387779e-17  1.000000e+00 -5.551115e-17
 ## [4,]  1.110223e-16 -1.110223e-16  0.000000e+00  1.000000e+00</code></pre></div>
 <p>There is some roundoff error.</p>
+</div>
+<div id="density-computation" class="section level2">
+<h2>Density computation</h2>
+<p>This package also has functions for density computations with the Wishart distribution. Densities are only defined for positive-definite input matrices and <span class="math inline">\(\nu\)</span> parameters larger than the dimension <span class="math inline">\(p\)</span>.</p>
+<p>The return value is on the <code>log</code> scale but it can be specified otherwise.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">'CholWishart'</span>)
+<span class="kw">dWishart</span>(<span class="kw">diag</span>(<span class="dv">3</span>), <span class="dt">df =</span> <span class="dv">5</span>, <span class="dv">5</span><span class="op">*</span><span class="kw">diag</span>(<span class="dv">3</span>))
+## [1] -19.45038
+
+<span class="kw">dInvWishart</span>(<span class="kw">diag</span>(<span class="dv">3</span>), <span class="dt">df =</span> <span class="dv">5</span>, .<span class="dv">2</span><span class="op">*</span><span class="kw">diag</span>(<span class="dv">3</span>))
+## [1] -19.45038</code></pre></div>
+<p>Note that, in general, these will not agree even if their covariance matrix parameters are inverses of each other. One of the reasons this works is that the determinant of <span class="math inline">\(\mathbf{X}\)</span> is <span class="math inline">\(1\)</span>.</p>
+<p>The density functions can take 3-D array input indexed on the third dimension and will output a vector of densities.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">20180311</span>)
+A &lt;-<span class="st"> </span><span class="kw">rWishart</span>(<span class="dt">n =</span> <span class="dv">3</span>, <span class="dt">df =</span> <span class="dv">3</span>, <span class="dt">Sigma =</span> <span class="kw">diag</span>(<span class="dv">3</span>))
+<span class="kw">dWishart</span>(A, <span class="dt">df =</span> <span class="dv">3</span>, <span class="dt">Sigma =</span> <span class="kw">diag</span>(<span class="dv">3</span>))
+## [1] -13.070275  -8.879220  -8.555529</code></pre></div>
+</div>
+<div id="other-functions" class="section level2">
+<h2>Other functions</h2>
+<p>The multivariate gamma (<span class="math inline">\(\Gamma_p\)</span>) and digamma (<span class="math inline">\(\psi_p\)</span>) functions are extensions of the univariate gamma (<span class="math inline">\(\Gamma\)</span>) and digamma (<span class="math inline">\(\psi\)</span>) functions (<span class="citation">Mardia, Bibby, and Kent (1982)</span>). They are useful in calculating the densities above. They come up in other distributions as well. The digamma is the first derivative of the gamma function. When the dimension <span class="math inline">\(p = 1\)</span>, they coincide with the usual definitions of the digamma and gamma functions.</p>
+<p>The multivariate gamma also comes in a logarithmic form (<code>lmvgamma</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lmvgamma</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,<span class="dv">1</span>) <span class="co"># note how they agree when p = 1</span>
+## [1] 0.0000000 0.0000000 0.6931472 1.7917595
+<span class="kw">lgamma</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)
+## [1] 0.0000000 0.0000000 0.6931472 1.7917595</code></pre></div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-Anderson84a">
+<p>Anderson, T. W., ed. 1984. <em>An Introduction to Multivariate Statistical Analysis</em>. Wiley.</p>
+</div>
+<div id="ref-dawid">
+<p>Dawid, A. P. 1981. “Some Matrix-Variate Distribution Theory: Notational Considerations and a Bayesian Application.” <em>Biometrika</em> 68 (1). [Oxford University Press, Biometrika Trust]: 265–74. <a href="http://www.jstor.org/stable/2335827" class="uri">http://www.jstor.org/stable/2335827</a>.</p>
+</div>
+<div id="ref-gupta1999matrix">
+<p>Gupta, A.K., and D.K. Nagar. 1999. <em>Matrix Variate Distributions</em>. Monographs and Surveys in Pure and Applied Mathematics. Taylor &amp; Francis. <a href="https://books.google.com/books?id=PQOYnT7P1loC" class="uri">https://books.google.com/books?id=PQOYnT7P1loC</a>.</p>
+</div>
+<div id="ref-mardia1982multivariate">
+<p>Mardia, K.V., J.M. Bibby, and J.T. Kent. 1982. <em>Multivariate Analysis</em>. Probability and Mathematical Statistics. Acad. Press. <a href="https://books.google.com/books?id=1nLonQEACAAJ" class="uri">https://books.google.com/books?id=1nLonQEACAAJ</a>.</p>
+</div>
+<div id="ref-rstatsteam">
+<p>R Core Team. 2017. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>.</p>
+</div>
+</div>
 </div>
 
 
