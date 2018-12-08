@@ -1,3 +1,7 @@
+# CholWishart 0.9.3
+
+* Minor update to internal functions
+
 # CholWishart 0.9.2
 
 * Adding possibility of array input to density functions. 
