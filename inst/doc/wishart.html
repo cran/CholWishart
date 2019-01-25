@@ -12,7 +12,7 @@
 
 <meta name="author" content="Geoffrey Thompson" />
 
-<meta name="date" content="2019-01-04" />
+<meta name="date" content="2019-01-25" />
 
 <title>Some Distributions Related to the Wishart</title>
 
@@ -302,7 +302,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Some Distributions Related to the Wishart</h1>
 <h4 class="author"><em>Geoffrey Thompson</em></h4>
-<h4 class="date"><em>2019-01-04</em></h4>
+<h4 class="date"><em>2019-01-25</em></h4>
 
 
 
@@ -358,21 +358,21 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">A &lt;-<span class="st"> </span><span class="kw">rPseudoWishart</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">df =</span> <span class="dv">3</span>, <span class="dt">Sigma =</span> <span class="kw">diag</span>(<span class="dv">5</span>))[, , <span class="dv">1</span>]</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">A</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">##            [,1]       [,2]       [,3]       [,4]       [,5]</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">## [1,]  1.4396817  1.6696925 -0.7863404  1.5976931  0.7487007</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">## [2,]  1.6696925  4.8520003 -0.7509533  1.4471373 -0.5174803</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">## [3,] -0.7863404 -0.7509533  0.5838199 -0.6106572 -0.8487259</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">## [4,]  1.5976931  1.4471373 -0.6106572  2.3856728  0.3134085</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">## [5,]  0.7487007 -0.5174803 -0.8487259  0.3134085  1.9553698</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">## [1,]  1.9553698  0.3134085 -0.8487259 -0.5174803  0.7487007</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">## [2,]  0.3134085  2.3856728 -0.6106572  1.4471373  1.5976931</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">## [3,] -0.8487259 -0.6106572  0.5838199 -0.7509533 -0.7863404</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">## [4,] -0.5174803  1.4471373 -0.7509533  4.8520003  1.6696925</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">## [5,]  0.7487007  1.5976931 -0.7863404  1.6696925  1.4396817</a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw">qr</span>(A)<span class="op">$</span>rank</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10">## [1] 3</a>
 <a class="sourceLine" id="cb3-11" data-line-number="11">B &lt;-<span class="st"> </span><span class="kw">rGenInvWishart</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">df =</span> <span class="dv">3</span>, <span class="dt">Sigma =</span> <span class="kw">diag</span>(<span class="dv">5</span>))[, , <span class="dv">1</span>]</a>
 <a class="sourceLine" id="cb3-12" data-line-number="12">B</a>
 <a class="sourceLine" id="cb3-13" data-line-number="13">##             [,1]         [,2]        [,3]         [,4]        [,5]</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">## [1,]  0.24217199 -0.027934699  0.03515182 -0.075495830 -0.04241885</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">## [2,] -0.02793470  0.028056042 -0.05232549  0.001357582 -0.05228386</a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">## [3,]  0.03515182 -0.052325490  0.10489215 -0.024506366  0.07086651</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">## [4,] -0.07549583  0.001357582 -0.02450637  0.155647000  0.18938779</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">## [5,] -0.04241885 -0.052283855  0.07086651  0.189387794  0.33422500</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">## [1,]  0.33422500  0.189387794  0.07086651 -0.052283855 -0.04241885</a>
+<a class="sourceLine" id="cb3-15" data-line-number="15">## [2,]  0.18938779  0.155647000 -0.02450637  0.001357582 -0.07549583</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16">## [3,]  0.07086651 -0.024506366  0.10489215 -0.052325490  0.03515182</a>
+<a class="sourceLine" id="cb3-17" data-line-number="17">## [4,] -0.05228386  0.001357582 -0.05232549  0.028056042 -0.02793470</a>
+<a class="sourceLine" id="cb3-18" data-line-number="18">## [5,] -0.04241885 -0.075495830  0.03515182 -0.027934699  0.24217199</a>
 <a class="sourceLine" id="cb3-19" data-line-number="19"><span class="kw">qr</span>(B)<span class="op">$</span>rank</a>
 <a class="sourceLine" id="cb3-20" data-line-number="20">## [1] 3</a></code></pre></div>
 <p>Note that the rank of both of these matrices is less than the dimension.</p>

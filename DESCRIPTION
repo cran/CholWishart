@@ -1,7 +1,7 @@
 Package: CholWishart
 Type: Package
 Title: Cholesky Decomposition of the Wishart Distribution
-Version: 0.9.4
+Version: 1.0.0
 Authors@R: c(person(c("Geoffrey", "Thompson"),email="gzthompson@gmail.com",
           role = c("aut", "cre")),  
           person("R Core Team", role = "ctb"))
@@ -23,9 +23,9 @@ Depends: R (>= 3.3.0)
 Suggests: testthat, knitr, rmarkdown, covr
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2019-01-04 21:53:46 UTC; gzt
+Packaged: 2019-01-25 20:51:36 UTC; gzt
 Author: Geoffrey Thompson [aut, cre],
   R Core Team [ctb]
 Maintainer: Geoffrey Thompson <gzthompson@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-01-07 19:50:15 UTC
+Date/Publication: 2019-01-25 23:10:15 UTC

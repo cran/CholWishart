@@ -71,6 +71,7 @@ test_that("Bad numeric input:",{
   expect_error(rInvWishart(1, 10, matrix(c(1,1,1,0), nrow = 2)))
   expect_error(rInvCholWishart(1, 10, matrix(c(1,1,1,0), nrow =
                                                2)))
+  expect_error(rPseudoWishart(1, 1, matrix(c(1,1,1,0), nrow = 2)))
 
   expect_error(dWishart(diag(2), 10, matrix(c(1,1,1,0), nrow = 2)))
   expect_error(dInvWishart(diag(2), 10, matrix(c(1,1,1,0), nrow = 2)))
@@ -86,6 +87,7 @@ test_that("Out of bounds numeric input: ", {
 
 
   expect_error(rCholWishart(1, 10, matrix(c(3, 1, 1, 1, 1, 3), nrow = 2)))
+  expect_error(rPseudoWishart(1, 2, matrix(c(3, 1, 1, 1, 1, 3), nrow = 2)))
   expect_error(rInvWishart(1, 10, matrix(c(3, 1, 1, 1, 1, 3), nrow = 2)))
   expect_error(rInvCholWishart(1, 10, matrix(c(3, 1, 1, 1, 1, 3), nrow =
                                                2)))
@@ -144,6 +146,7 @@ test_that("Imaginary matrix:", {
   expect_error(rCholWishart(1, 10, Z))
   expect_error(rInvCholWishart(1, 10, Z))
   expect_error(rInvWishart(-1, 10, Z))
+  expect_error(rPseudoWishart(1, 1, Z))
   expect_error(dWishart(diag(2),4, Z))
   expect_error(dInvWishart(diag(2), 4, Z))
   expect_error(dWishart(Z,4, diag(2)))
@@ -156,4 +159,19 @@ test_that("Imaginary matrix:", {
   expect_error(mvdigamma(1:4,Z))
 
 
+})
+
+test_that("df incompatible:",{
+  set.seed(20190114)
+  A <- rWishart(1, 10, diag(5))[,,1]
+  
+  expect_error(rCholWishart(1, 2, A))
+  expect_error(rInvWishart(1, 2, A))
+  expect_error(rInvCholWishart(1, 2, A))
+  expect_warning(rPseudoWishart(1, 6, A))
+  expect_error(rPseudoWishart(1, 2.5, A))
+  expect_warning(rGenInvWishart(1, 6, A))
+  expect_error(rGenInvWishart(1, 2.5, A))
+  expect_error(rPseudoWishart(1, 0, A))
+  expect_error(rGenInvWishart(1, 0, A))
 })
