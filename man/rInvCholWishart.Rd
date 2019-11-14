@@ -26,7 +26,7 @@ Generate n random matrices, distributed according
 
    Note there are different ways of parameterizing the Inverse
    Wishart distribution, so check which one you need.
-    Here,  If \eqn{X \sim IW_p(\Sigma, \nu)}{X ~ IW_p(Sigma, df)} then
+    Here, if \eqn{X \sim IW_p(\Sigma, \nu)}{X ~ IW_p(Sigma, df)} then
     \eqn{X^{-1} \sim W_p(\Sigma^{-1}, \nu)}{X^{-1} ~ W_p(Sigma^{-1}, df)}.
     Dawid (1981) has a different definition: if
     \eqn{X \sim W_p(\Sigma^{-1}, \nu)}{X ~ W_p(Sigma^{-1}, df)} and
@@ -37,15 +37,15 @@ Generate n random matrices, distributed according
 \examples{
 # How it is parameterized:
 set.seed(20180211)
-A <- rCholWishart(1,10,3*diag(5))[,,1]
+A <- rCholWishart(1L, 10, 3*diag(5L))[,,1]
 A
 set.seed(20180211)
-B <- rInvCholWishart(1,10,1/3*diag(5))[,,1]
+B <- rInvCholWishart(1L, 10, 1/3*diag(5L))[,,1]
 B
 crossprod(A) \%*\% crossprod(B)
 
 set.seed(20180211)
-C <- chol(stats::rWishart(1,10,3*diag(5))[,,1])
+C <- chol(stats::rWishart(1L, 10, 3*diag(5L))[,,1])
 C
 }
 \references{

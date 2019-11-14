@@ -51,15 +51,15 @@
 #' @examples
 #' # How it is parameterized:
 #' set.seed(20180211)
-#' A <- rCholWishart(1,10,3*diag(5))[,,1]
+#' A <- rCholWishart(1L, 10, 3*diag(5L))[,,1]
 #' A
 #' set.seed(20180211)
-#' B <- rInvCholWishart(1,10,1/3*diag(5))[,,1]
+#' B <- rInvCholWishart(1L, 10, 1/3*diag(5L))[,,1]
 #' B
 #' crossprod(A) %*% crossprod(B)
 #'
 #' set.seed(20180211)
-#' C <- chol(stats::rWishart(1,10,3*diag(5))[,,1])
+#' C <- chol(stats::rWishart(1L, 10, 3*diag(5L))[,,1])
 #' C
 rCholWishart <- function(n, df, Sigma) {
   Sigma <- as.matrix(Sigma)
@@ -67,7 +67,7 @@ rCholWishart <- function(n, df, Sigma) {
   if (n < 1 || !(is.numeric(n)))
     stop("'n' must be 1 or larger.")
 
-  if (!is.numeric(df) || df < dims[1] || dims[1] <= 0)
+  if (!is.numeric(df) || df < dims[1L])
     stop("inconsistent degrees of freedom and dimension")
   .Call("C_rCholWishart", n, df, Sigma, PACKAGE = "CholWishart")
 }
@@ -82,7 +82,7 @@ rCholWishart <- function(n, df, Sigma) {
 #'
 #'    Note there are different ways of parameterizing the Inverse
 #'    Wishart distribution, so check which one you need.
-#'     Here,  If \eqn{X \sim IW_p(\Sigma, \nu)}{X ~ IW_p(Sigma, df)} then
+#'     Here, if \eqn{X \sim IW_p(\Sigma, \nu)}{X ~ IW_p(Sigma, df)} then
 #'     \eqn{X^{-1} \sim W_p(\Sigma^{-1}, \nu)}{X^{-1} ~ W_p(Sigma^{-1}, df)}.
 #'     Dawid (1981) has a different definition: if
 #'     \eqn{X \sim W_p(\Sigma^{-1}, \nu)}{X ~ W_p(Sigma^{-1}, df)} and
@@ -116,15 +116,15 @@ rCholWishart <- function(n, df, Sigma) {
 #' @examples
 #' # How it is parameterized:
 #' set.seed(20180211)
-#' A <- rCholWishart(1,10,3*diag(5))[,,1]
+#' A <- rCholWishart(1L, 10, 3*diag(5L))[,,1]
 #' A
 #' set.seed(20180211)
-#' B <- rInvCholWishart(1,10,1/3*diag(5))[,,1]
+#' B <- rInvCholWishart(1L, 10, 1/3*diag(5L))[,,1]
 #' B
 #' crossprod(A) %*% crossprod(B)
 #'
 #' set.seed(20180211)
-#' C <- chol(stats::rWishart(1,10,3*diag(5))[,,1])
+#' C <- chol(stats::rWishart(1L, 10, 3*diag(5L))[,,1])
 #' C
 rInvCholWishart <- function(n, df, Sigma) {
   Sigma <- as.matrix(Sigma)
@@ -132,7 +132,7 @@ rInvCholWishart <- function(n, df, Sigma) {
   if (n < 1 || !(is.numeric(n)))
     stop("'n' must be 1 or larger.")
 
-  if (!is.numeric(df) || df < dims[1] || dims[1] <= 0)
+  if (!is.numeric(df) || df < dims[1L])
     stop("inconsistent degrees of freedom and dimension")
   .Call("C_rInvCholWishart", n, df, Sigma, PACKAGE = "CholWishart")
 }
@@ -145,7 +145,7 @@ rInvCholWishart <- function(n, df, Sigma) {
 #'
 #'    Note there are different ways of parameterizing the Inverse
 #'    Wishart distribution, so check which one you need.
-#'     Here,  If \eqn{X \sim IW_p(\Sigma, \nu)}{X ~ IW_p(Sigma, df)} then
+#'     Here, if \eqn{X \sim IW_p(\Sigma, \nu)}{X ~ IW_p(Sigma, df)} then
 #'     \eqn{X^{-1} \sim W_p(\Sigma^{-1}, \nu)}{X^{-1} ~ W_p(Sigma^{-1}, df)}.
 #'     Dawid (1981) has a different definition: if
 #'     \eqn{X \sim W_p(\Sigma^{-1}, \nu)}{X ~ W_p(Sigma^{-1}, df)} and
@@ -177,9 +177,9 @@ rInvCholWishart <- function(n, df, Sigma) {
 #'
 #' @examples
 #' set.seed(20180221)
-#' A<-rInvWishart(1,10,5*diag(5))[,,1]
+#' A<-rInvWishart(1L, 10, 5*diag(5L))[,,1]
 #' set.seed(20180221)
-#' B<-stats::rWishart(1,10,.2*diag(5))[,,1]
+#' B<-stats::rWishart(1L, 10, .2*diag(5L))[,,1]
 #'
 #' A %*% B
 rInvWishart <- function(n, df, Sigma) {
@@ -188,7 +188,7 @@ rInvWishart <- function(n, df, Sigma) {
   if (n < 1 || !(is.numeric(n)))
     stop("'n' must be 1 or larger.")
 
-  if (!is.numeric(df) || df < dims[1] || dims[1] <= 0)
+  if (!is.numeric(df) || df < dims[1L])
     stop("inconsistent degrees of freedom and dimension")
   .Call("C_rInvWishart", n, df, Sigma, PACKAGE = "CholWishart")
 }
@@ -215,7 +215,7 @@ rInvWishart <- function(n, df, Sigma) {
 #'
 #'     Note there are different ways of parameterizing the Inverse
 #'     Wishart distribution, so check which one you need.
-#'     Here,  If \eqn{X \sim IW_p(\Sigma, \nu)}{X ~ IW_p(Sigma, df)} then
+#'     Here, if \eqn{X \sim IW_p(\Sigma, \nu)}{X ~ IW_p(Sigma, df)} then
 #'     \eqn{X^{-1} \sim W_p(\Sigma^{-1}, \nu)}{X^{-1} ~ W_p(Sigma^{-1}, df)}.
 #'     Dawid (1981) has a different definition: if
 #'     \eqn{X \sim W_p(\Sigma^{-1}, \nu)}{X ~ W_p(Sigma^{-1}, df)} and
@@ -258,12 +258,12 @@ rInvWishart <- function(n, df, Sigma) {
 #'
 #' @examples
 #' set.seed(20181228)
-#' A<-rGenInvWishart(1, 4, 5.0*diag(5))[,,1]
+#' A<-rGenInvWishart(1L, 4L, 5.0*diag(5L))[,,1]
 #' A
 #' # A should be singular
 #' eigen(A)$values
 #' set.seed(20181228)
-#' B <- rPseudoWishart(1, 4, 5.0*diag(5))[,,1]
+#' B <- rPseudoWishart(1L, 4L, 5.0*diag(5L))[,,1]
 #' 
 #' # A should be a Moore-Penrose pseudo-inverse of B
 #' B
@@ -332,7 +332,7 @@ rGenInvWishart <- function(n, df, Sigma) {
 #'
 #' @examples
 #' set.seed(20181227)
-#' A<-rPseudoWishart(1,4,5.0*diag(5))[,,1]
+#' A<-rPseudoWishart(1L, 4L, 5.0*diag(5L))[,,1]
 #' # A should be singular
 #' eigen(A)$values
 #'

@@ -1,3 +1,19 @@
+# CholWishart 1.1.0
+
+* Latest update to CRAN.
+
+# CholWishart 1.0.3
+
+* Minor updates to documentation
+
+
+# CholWishart 1.0.2
+
+* Add `R_RegisterCCallable()` interface and header `inst/install/CholWishart.h` 
+  so that the exported functions can be called in C from other packages.
+  All the exported functions are now also available to be called by 
+  external C code in other packages, just pull in the header.
+
 # CholWishart 1.0.1
 
 * Update documentation to use `pkgdown`.
