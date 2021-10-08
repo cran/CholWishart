@@ -1,3 +1,13 @@
+# CholWishart 1.1.2
+
+* Minor updates to documentation to fix URLs for CRAN submission.
+
+# CholWishart 1.1.1
+
+* Updates to conform with the following recommendation: 
+  https://cran.r-project.org/doc/manuals/r-devel/R-exts.html#Fortran-character-strings While this should not
+  break anything, I believe this may require R>=3.6.2.
+
 # CholWishart 1.1.0
 
 * Latest update to CRAN.

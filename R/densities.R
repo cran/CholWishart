@@ -20,8 +20,8 @@
 
 #' Density for Random Wishart Distributed Matrices
 #'
-#' Compute the density of an observation of a random Wishart distributed matrix (\code{dWishart})
-#' or an observation
+#' Compute the density of an observation of a random Wishart distributed matrix
+#' (\code{dWishart}) or an observation
 #' from the inverse Wishart distribution (\code{dInvWishart}).
 #'
 #'    Note there are different ways of parameterizing the Inverse
@@ -31,95 +31,115 @@
 #'     Dawid (1981) has a different definition: if
 #'     \eqn{X \sim W_p(\Sigma^{-1}, \nu)}{X ~ W_p(Sigma^{-1}, df)} and
 #'     \eqn{\nu > p - 1}{df > p - 1}, then
-#'     \eqn{X^{-1} = Y \sim IW(\Sigma, \delta)}{X^{-1} = Y ~ IW(Sigma, delta)}, where
+#'     \eqn{X^{-1} = Y \sim IW(\Sigma, \delta)}{X^{-1} = Y ~ IW(Sigma, delta)},
+#'     where
 #'     \eqn{\delta = \nu - p + 1}{delta = df - p + 1}.
 #'
-#' @param x positive definite \eqn{p \times p}{p * p} observations for density estimation - either one matrix or a 3-D array.
+#' @param x positive definite \eqn{p \times p}{p * p} observations for density
+#'          estimation - either one matrix or a 3-D array.
 #' @param df numeric parameter, "degrees of freedom".
-#' @param Sigma positive definite \eqn{p \times p}{p * p} "scale" matrix, the matrix parameter of the distribution.
+#' @param Sigma positive definite \eqn{p \times p}{p * p} "scale" matrix,
+#'              the matrix parameter of the distribution.
 #' @param log logical, whether to return value on the log scale.
 #'
 #' @return Density or log of density
 #'
 #' @references
-#' Dawid, A. (1981). Some Matrix-Variate Distribution Theory: Notational Considerations and a
-#' Bayesian Application. \emph{Biometrika}, 68(1), 265-274. \doi{10.2307/2335827}
+#' Dawid, A. (1981). Some Matrix-Variate Distribution Theory:
+#' Notational Considerations and a Bayesian Application.
+#' \emph{Biometrika}, 68(1), 265-274. \doi{10.2307/2335827}
 #'
-#' Gupta, A. K.  and D. K. Nagar (1999). \emph{Matrix variate distributions}. Chapman and Hall.
+#' Gupta, A. K.  and D. K. Nagar (1999). \emph{Matrix variate distributions}.
+#' Chapman and Hall.
 #'
-#' Mardia, K. V., J. T. Kent, and J. M. Bibby (1979) \emph{Multivariate Analysis},
+#' Mardia, K. V., J. T. Kent, and J. M. Bibby (1979)
+#' \emph{Multivariate Analysis},
 #' London: Academic Press.
 #' @export
 #'
 #' @examples
 #' set.seed(20180222)
-#' A <- rWishart(1,10,diag(4))[,,1]
+#' A <- rWishart(1, 10, diag(4))[, , 1]
 #' A
-#' dWishart(x = A, df = 10,Sigma = diag(4L), log=TRUE)
-#' dInvWishart(x = solve(A), df = 10,Sigma = diag(4L), log=TRUE)
+#' dWishart(x = A, df = 10, Sigma = diag(4L), log = TRUE)
+#' dInvWishart(x = solve(A), df = 10, Sigma = diag(4L), log = TRUE)
 dWishart <- function(x, df, Sigma, log = TRUE) {
-  if (!is.numeric(Sigma))
+  if (!is.numeric(Sigma)) {
     stop("'Sigma' must be numeric")
-  Sigma <- as.matrix(Sigma)
-  dims = dim(Sigma)
-  if (!is.numeric(x))
-    stop("'x' must be numeric")
-  if (dim(x)[1L] != dim(x)[2L] ||
-      dim(x)[1L] != dims[1L] || dims[1L] != dims[2L])
-    stop("non-conformable dimensions")
-  if (!isSymmetric(Sigma))
-    stop("non-symmetric input")
-  if (length(dim(x)) < 3L) x <- array(x, dim = c(dim(x),1L))
-  dimx = dim(x)
-  ldensity = rep(0, dimx[3L])
-  cholS <- chol(Sigma)
-  ldetS <- sum(log(diag(cholS))) * 2
-  for (i in seq(dimx[3])) {
-    if ( !isSymmetric(x[,,i]))
-      stop("non-symmetric input")
-    cholX <- chol(x[,,i])
-    ldetX <- sum(log(diag(cholX))) * 2
-    ldensity[i] <-
-      .5 * (df - dims[1L] - 1) * ldetX - .5 * sum(diag(chol2inv(cholS) %*% x[,,i])) -
-      (df * dims[1L] / 2 * log(2)) - .5 * df * ldetS - lmvgamma(df / 2, dims[1L])
   }
-  if (log)
+  sigma <- as.matrix(Sigma)
+  dims <- dim(sigma)
+  if (!is.numeric(x)) {
+    stop("'x' must be numeric")
+  }
+  if (dim(x)[1L] != dim(x)[2L] ||
+    dim(x)[1L] != dims[1L] || dims[1L] != dims[2L]) {
+    stop("non-conformable dimensions")
+  }
+  if (!isSymmetric(sigma)) {
+    stop("non-symmetric input")
+  }
+  if (length(dim(x)) < 3L) x <- array(x, dim = c(dim(x), 1L))
+  dimx <- dim(x)
+  ldensity <- rep(0, dimx[3L])
+  chol_s <- chol(sigma)
+  ldet_s <- sum(log(diag(chol_s))) * 2
+  for (i in seq(dimx[3])) {
+    if (!isSymmetric(x[, , i])) {
+      stop("non-symmetric input")
+    }
+    chol_x <- chol(x[, , i])
+    ldet_x <- sum(log(diag(chol_x))) * 2
+    ldensity[i] <-
+      .5 * (df - dims[1L] - 1) * ldet_x +
+      -.5 * sum(diag(chol2inv(chol_s) %*% x[, , i])) +
+      -(df * dims[1L] / 2 * log(2)) - .5 * df * ldet_s +
+      -lmvgamma(df / 2, dims[1L])
+  }
+  if (log) {
     return(ldensity)
-  else
+  } else {
     return(exp(ldensity))
+  }
 }
 
 #' @describeIn dWishart density for the inverse Wishart distribution.
 #' @export
 dInvWishart <- function(x, df, Sigma, log = TRUE) {
-  if (!is.numeric(Sigma))
+  if (!is.numeric(Sigma)) {
     stop("'Sigma' must be numeric")
-  Sigma <- as.matrix(Sigma)
-  dims = dim(Sigma)
-  if (!is.numeric(x))
+  }
+  sigma <- as.matrix(Sigma)
+  dims <- dim(sigma)
+  if (!is.numeric(x)) {
     stop("x must be numeric.")
+  }
   if (dim(x)[1L] != dim(x)[2L] ||
-      dim(x)[1L] != dims[1L] || dims[1L] != dims[2L])
+    dim(x)[1L] != dims[1L] || dims[1L] != dims[2L]) {
     stop("non-conformable dimensions")
-  if ( !isSymmetric(Sigma))
+  }
+  if (!isSymmetric(sigma)) {
     stop("non-symmetric input")
-  if (length(dim(x)) < 3L) x <- array(x, dim = c(dim(x),1L))
-  dimx = dim(x)
-  ldensity = rep(0, dimx[3L])
-  cholS <- chol(Sigma)
-  ldetS <- sum(log(diag(cholS))) * 2
+  }
+  if (length(dim(x)) < 3L) x <- array(x, dim = c(dim(x), 1L))
+  dimx <- dim(x)
+  ldensity <- rep(0, dimx[3L])
+  chol_s <- chol(sigma)
+  ldet_s <- sum(log(diag(chol_s))) * 2
   for (i in seq(dimx[3L])) {
-    if ( !isSymmetric(x[,,i]))
+    if (!isSymmetric(x[, , i])) {
       stop("non-symmetric input")
-    cholX <- chol(x[,,i])
-    ldetX <- sum(log(diag(cholX))) * 2
+    }
+    chol_x <- chol(x[, , i])
+    ldet_x <- sum(log(diag(chol_x))) * 2
     ldensity[i] <-
-      -.5 * (df + dims[1L] + 1) * ldetX + .5 * df * ldetS - .5 * sum(diag(chol2inv(cholX) %*% Sigma)) -
+      -.5 * (df + dims[1L] + 1) * ldet_x + .5 * df * ldet_s +
+      -.5 * sum(diag(chol2inv(chol_x) %*% sigma)) -
       (df * dims[1L] / 2 * log(2)) - lmvgamma(df / 2, dims[1L])
   }
-  if (log)
+  if (log) {
     return(ldensity)
-  else
+  } else {
     return(exp(ldensity))
-
+  }
 }
