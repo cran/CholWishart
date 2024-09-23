@@ -108,8 +108,8 @@ SEXP
     // allocate early to avoid memory leaks in Callocs below.
     PROTECT(ans = alloc3DArray(REALSXP, dims[0], dims[0], n));
     psqr = dims[0] * dims[0];
-    tmp = Calloc(psqr, double);
-    scCp = Calloc(psqr, double);
+    tmp = R_Calloc(psqr, double);
+    scCp = R_Calloc(psqr, double);
 
     Memcpy(scCp, REAL(scal), psqr);
     memset(tmp, 0, psqr * sizeof(double));
@@ -136,7 +136,7 @@ SEXP
     }
 
     PutRNGstate();
-    Free(scCp); Free(tmp);
+    R_Free(scCp); R_Free(tmp);
     UNPROTECT(1);
     return ans;
   }
@@ -167,8 +167,8 @@ SEXP
     // allocate early to avoid memory leaks in Callocs below.
     PROTECT(ans = alloc3DArray(REALSXP, dims[0], dims[0], n));
     psqr = dims[0] * dims[0];
-    tmp = Calloc(psqr, double);
-    scCp = Calloc(psqr, double);
+    tmp = R_Calloc(psqr, double);
+    scCp = R_Calloc(psqr, double);
 
     Memcpy(scCp, REAL(scal), psqr);
     memset(tmp, 0, psqr * sizeof(double));
@@ -213,7 +213,7 @@ SEXP
     }
 
     PutRNGstate();
-    Free(scCp); Free(tmp);
+    R_Free(scCp); R_Free(tmp);
     UNPROTECT(1);
     return ans;
   }
@@ -243,8 +243,8 @@ SEXP
     // allocate early to avoid memory leaks in Callocs below.
     PROTECT(ans = alloc3DArray(REALSXP, dims[0], dims[0], n));
     psqr = dims[0] * dims[0];
-    tmp = Calloc(psqr, double);
-    scCp = Calloc(psqr, double);
+    tmp = R_Calloc(psqr, double);
+    scCp = R_Calloc(psqr, double);
 
     Memcpy(scCp, REAL(scal), psqr);
     memset(tmp, 0, psqr * sizeof(double));
@@ -290,7 +290,7 @@ SEXP
     }
 
     PutRNGstate();
-    Free(scCp); Free(tmp);
+    R_Free(scCp); R_Free(tmp);
     UNPROTECT(1);
     return ans;
   }
@@ -313,7 +313,7 @@ double c_lmvgamma (double x, int p) {
     error("p must be greater than or equal to 1.");
   if (x <= 0)
     error("x must be greater than 0.");
-  ans =(p * (p - 1)/4.0) * log(PI);
+  ans =(p * (p - 1)/4.0) * log(M_PI);
   for (i = 0; i < p; i++){
     ans = ans + (lgamma(x  - (i/2.0) ));
   }
@@ -439,8 +439,8 @@ SEXP
     PROTECT(ans = alloc3DArray(REALSXP, dims[0], dims[0], n));
     psqr = dims[0] * dims[0];
     pn = dims[0] * nu;
-    tmp = Calloc(pn, double);
-    scCp = Calloc(psqr, double);
+    tmp = R_Calloc(pn, double);
+    scCp = R_Calloc(psqr, double);
 
     Memcpy(scCp, REAL(scal), psqr);
     memset(tmp, 0, pn * sizeof(double));
@@ -464,7 +464,7 @@ SEXP
     }
 
     PutRNGstate();
-    Free(scCp); Free(tmp);
+    R_Free(scCp); R_Free(tmp);
     UNPROTECT(1);
     return ans;
   }

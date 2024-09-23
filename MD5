@@ -1,4 +1,4 @@
-7b5c8532fe1ab99b38b54c9d61fca353 *DESCRIPTION
+d742bb71a2a0778caaa650376773a597 *DESCRIPTION
 9b5a3c2b19b4532e539f59bf811e8f90 *NAMESPACE
 6af5852f045b90c2a7dea62a399ae08f *NEWS.md
 c1fde69929fd264893cdcf940c50bd8b *R/CholWishart-package.r
@@ -6,7 +6,7 @@ c1fde69929fd264893cdcf940c50bd8b *R/CholWishart-package.r
 5940c93cd21382e89e2ace49ed337efa *R/gammas.R
 64e6fa66bc08de5bedd88d6610212e62 *R/wishart.R
 6e6c240f3a3fe2b4c114f539460b9d11 *README.md
-323541c64aa5991f42a972ce27836857 *build/partial.rdb
+aa5e5a2cbfaea3d9b6cdbe378ac48cee *build/partial.rdb
 0a247c6422a5dc7ff00a952aef8603fb *build/vignette.rds
 6eddd39995cc0b669a0de5f42db547ff *inst/AUTHORS
 9bac0d7d15566f0eeaea835f0a64a3a1 *inst/doc/wishart.R
@@ -24,7 +24,7 @@ b83574a798906f81b2d9f9c3dd570f63 *man/rGenInvWishart.Rd
 49c88851de4706607bb52f6f96553598 *man/rPseudoWishart.Rd
 2a6f9e9e044a78154d3cfda5936d6f48 *src/Makevars
 83a22242172afe2699a1edb8c56dc99b *src/init.c
-845b28d3735bfdd653aca8954ddc64e4 *src/rCholWishart.c
+560b93cc32d80858eea16232c7078617 *src/rCholWishart.c
 822b3e2a351cefb5fd5d0cba49c29591 *tests/testthat.R
 9acfbb863b07507b540ccf8e4b66197c *tests/testthat/testinput.R
 a85c9421112c700702ede02bcce0115c *tests/testthat/testoutput.R
