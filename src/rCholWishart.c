@@ -105,7 +105,7 @@ SEXP
     if (!isMatrix(scal) || !isReal(scal) || dims[0] != dims[1])
       error("'scal' must be a square, real matrix");
     if (n <= 0) n = 1;
-    // allocate early to avoid memory leaks in Callocs below.
+    // allocate early to avoid memory leaks in R_Callocs below.
     PROTECT(ans = alloc3DArray(REALSXP, dims[0], dims[0], n));
     psqr = dims[0] * dims[0];
     tmp = R_Calloc(psqr, double);
@@ -164,7 +164,7 @@ SEXP
       error("'scal' must be a square, real matrix");
 
     if (n <= 0) n = 1;
-    // allocate early to avoid memory leaks in Callocs below.
+    // allocate early to avoid memory leaks in R_Callocs below.
     PROTECT(ans = alloc3DArray(REALSXP, dims[0], dims[0], n));
     psqr = dims[0] * dims[0];
     tmp = R_Calloc(psqr, double);
@@ -240,7 +240,7 @@ SEXP
       error("'scal' must be a square, real matrix");
 
     if (n <= 0) n = 1;
-    // allocate early to avoid memory leaks in Callocs below.
+    // allocate early to avoid memory leaks in R_Callocs below.
     PROTECT(ans = alloc3DArray(REALSXP, dims[0], dims[0], n));
     psqr = dims[0] * dims[0];
     tmp = R_Calloc(psqr, double);
@@ -435,7 +435,7 @@ SEXP
     if (!isMatrix(scal) || !isReal(scal) || dims[0] != dims[1])
       error("'scal' must be a square, real matrix");
     if (n <= 0) n = 1;
-    // allocate early to avoid memory leaks in Callocs below.
+    // allocate early to avoid memory leaks in R_Callocs below.
     PROTECT(ans = alloc3DArray(REALSXP, dims[0], dims[0], n));
     psqr = dims[0] * dims[0];
     pn = dims[0] * nu;
